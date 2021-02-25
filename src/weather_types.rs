@@ -202,6 +202,7 @@ pub struct WeatherReportOneCallDaily {
     pub uvi: f32,
 }
 
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
 pub struct WeatherReportOneCallHourly {
     pub dt: u64,
     pub temp: f32,
@@ -213,7 +214,7 @@ pub struct WeatherReportOneCallHourly {
     pub visibility: u64,
     pub wind_speed: f32,
     pub wind_deg: u64,
-    pub weather: Weather,
+    pub weather: Vec<Weather>,
     pub snow: Option<Snow>,
 }
 
@@ -234,6 +235,7 @@ pub struct WeatherReportOneCallHistorical {
     pub timezone: String,
     pub timezone_offset: i64,
     pub current: WeatherReportOneCallCurrent,
+    pub hourly: Vec<WeatherReportOneCallHourly>
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]

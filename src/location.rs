@@ -1,10 +1,4 @@
 #[derive(Debug)]
-pub struct Coordinates {
-    pub lat: f32,
-    pub lon: f32,
-}
-
-#[derive(Debug)]
 pub enum LocationSpecifier {
     CityAndCountryName {
         city: String,

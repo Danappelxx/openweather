@@ -10,7 +10,7 @@ mod location;
 mod parameters;
 mod weather_types;
 
-pub use location::{Coordinates, LocationSpecifier};
+pub use location::{LocationSpecifier};
 pub use parameters::{Language, Settings, Unit};
 
 use log::debug;
