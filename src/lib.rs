@@ -146,6 +146,45 @@ pub fn get_16_day_forecast(
     get(&url.as_str())
 }
 
+pub fn get_one_call_current(
+    lat: f32,
+    lon: f32,
+    key: &str,
+    settings: &Settings
+) -> Result<WeatherReportOneCall> {
+    let mut base = String::from(API_BASE);
+    let mut params = settings.format();
+
+    base.push_str("onecall");
+    params.push(("lat".to_string(), format!("{}", lat)));
+    params.push(("lon".to_string(), format!("{}", lon)));
+    params.push(("exclude".to_string(), "minutely,hourly".to_string()));
+    params.push(("APPID".to_string(), key.to_string()));
+
+    let url = Url::parse_with_params(&base, params)?;
+    get(&url.as_str())
+}
+
+pub fn get_one_call_historical(
+    lat: f32,
+    lon: f32,
+    dt: u64,
+    key: &str,
+    settings: &Settings
+) -> Result<WeatherReportOneCallHistorical> {
+    let mut base = String::from(API_BASE);
+    let mut params = settings.format();
+
+    base.push_str("onecall/timemachine");
+    params.push(("lat".to_string(), format!("{}", lat)));
+    params.push(("lon".to_string(), format!("{}", lon)));
+    params.push(("dt".to_string(), format!("{}", dt)));
+    params.push(("APPID".to_string(), key.to_string()));
+
+    let url = Url::parse_with_params(&base, params)?;
+    get(&url.as_str())
+}
+
 pub fn get_historical_data(
     location: &LocationSpecifier,
     key: &str,
@@ -306,5 +345,24 @@ mod tests {
         let weather = crate::get_5_day_forecast(&loc, &api_key(), SETTINGS)
             .expect("failure getting 5 day forecast");
         println!("5 Day Report in Minneapolis, MN it is {:?}", weather.list);
+    }
+
+    #[test]
+    fn get_one_call_current() {
+        let lat = 40.457177;
+        let lon = -106.804447;
+        let weather = crate::get_one_call_current(lat, lon, &api_key(), SETTINGS)
+            .expect("failure getting one-call current weather");
+        println!("current weather in Steamboat Springs, CO: {:?}", weather);
+    }
+
+    #[test]
+    fn get_one_call_historical() {
+        let lat = 40.457177;
+        let lon = -106.804447;
+        let dt = (time::now_utc() - time::Duration::days(1)).to_timespec().sec as u64;
+        let weather = crate::get_one_call_historical(lat, lon, dt, &api_key(), SETTINGS)
+            .expect("failure getting one-call current weather");
+        println!("current weather in Steamboat Springs, CO: {:?}", weather);
     }
 }

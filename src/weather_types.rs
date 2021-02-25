@@ -78,6 +78,8 @@ pub struct Snow {
     /// Snow volume
     #[serde(rename = "3h")]
     pub three_h: Option<f32>,
+    #[serde(rename = "1h")]
+    pub one_h: Option<f32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
@@ -142,6 +144,96 @@ pub struct Sys {
     pub country: String,
     pub sunrise: u64,
     pub sunset: u64,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCallCurrent {
+    pub dt: u64,
+    pub sunrise: u64,
+    pub sunset: u64,
+    pub temp: f32,
+    pub feels_like: f32,
+    pub pressure: u64,
+    pub humidity: u64,
+    pub dew_point: f32,
+    pub uvi: f32,
+    pub clouds: u64,
+    pub visibility: u64,
+    pub wind_speed: f32,
+    pub wind_deg: u64,
+    pub weather: Vec<Weather>,
+    pub snow: Option<Snow>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCallTemp {
+    pub day: f32,
+    pub min: f32,
+    pub max: f32,
+    pub night: f32,
+    pub eve: f32,
+    pub morn: f32,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCallFeelsLike {
+    pub day: f32,
+    pub night: f32,
+    pub eve: f32,
+    pub morn: f32,
+}
+
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCallDaily {
+    pub dt: u64,
+    pub sunrise: u64,
+    pub sunset: u64,
+    pub temp: WeatherReportOneCallTemp,
+    pub pressure: u64,
+    pub humidity: u64,
+    pub dew_point: f32,
+    pub wind_speed: f32,
+    pub wind_deg: u64,
+    pub weather: Vec<Weather>,
+    pub clouds: u64,
+    pub pop: f32,
+    pub snow: Option<f32>,
+    pub uvi: f32,
+}
+
+pub struct WeatherReportOneCallHourly {
+    pub dt: u64,
+    pub temp: f32,
+    pub feels_like: f32,
+    pub pressure: u64,
+    pub humidity: u64,
+    pub dew_point: f32,
+    pub clouds: u64,
+    pub visibility: u64,
+    pub wind_speed: f32,
+    pub wind_deg: u64,
+    pub weather: Weather,
+    pub snow: Option<Snow>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCall {
+    pub lat: f32,
+    pub lon: f32,
+    pub timezone: String,
+    pub timezone_offset: i64,
+    pub current: WeatherReportOneCallCurrent,
+    pub daily: Vec<WeatherReportOneCallDaily>,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
+pub struct WeatherReportOneCallHistorical {
+    pub lat: f32,
+    pub lon: f32,
+    pub timezone: String,
+    pub timezone_offset: i64,
+    pub current: WeatherReportOneCallCurrent,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
