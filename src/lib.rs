@@ -10,7 +10,7 @@ mod location;
 mod parameters;
 mod weather_types;
 
-pub use location::LocationSpecifier;
+pub use location::{Coordinates, LocationSpecifier};
 pub use parameters::{Language, Settings, Unit};
 
 use log::debug;
@@ -147,8 +147,7 @@ pub fn get_16_day_forecast(
 }
 
 pub fn get_one_call_current(
-    lat: f32,
-    lon: f32,
+    coordinates: &Coordinates,
     key: &str,
     settings: &Settings
 ) -> Result<WeatherReportOneCall> {
@@ -156,8 +155,8 @@ pub fn get_one_call_current(
     let mut params = settings.format();
 
     base.push_str("onecall");
-    params.push(("lat".to_string(), format!("{}", lat)));
-    params.push(("lon".to_string(), format!("{}", lon)));
+    params.push(("lat".to_string(), format!("{}", coordinates.lat)));
+    params.push(("lon".to_string(), format!("{}", coordinates.lon)));
     params.push(("exclude".to_string(), "minutely,hourly".to_string()));
     params.push(("APPID".to_string(), key.to_string()));
 
@@ -166,8 +165,7 @@ pub fn get_one_call_current(
 }
 
 pub fn get_one_call_historical(
-    lat: f32,
-    lon: f32,
+    coordinates: &Coordinates,
     dt: u64,
     key: &str,
     settings: &Settings
@@ -176,8 +174,8 @@ pub fn get_one_call_historical(
     let mut params = settings.format();
 
     base.push_str("onecall/timemachine");
-    params.push(("lat".to_string(), format!("{}", lat)));
-    params.push(("lon".to_string(), format!("{}", lon)));
+    params.push(("lat".to_string(), format!("{}", coordinates.lat)));
+    params.push(("lon".to_string(), format!("{}", coordinates.lon)));
     params.push(("dt".to_string(), format!("{}", dt)));
     params.push(("APPID".to_string(), key.to_string()));
 
@@ -313,7 +311,7 @@ pub fn get_historical_uv_index(
 
 #[cfg(test)]
 mod tests {
-    use crate::{LocationSpecifier, Settings};
+    use crate::{Coordinates, LocationSpecifier, Settings};
     static SETTINGS: &Settings = &Settings {
         unit: None,
         lang: None,
@@ -349,19 +347,23 @@ mod tests {
 
     #[test]
     fn get_one_call_current() {
-        let lat = 40.457177;
-        let lon = -106.804447;
-        let weather = crate::get_one_call_current(lat, lon, &api_key(), SETTINGS)
+        let coordinates = Coordinates {
+            lat: 40.457177,
+            lon: -106.804447,
+        };
+        let weather = crate::get_one_call_current(&coordinates, &api_key(), SETTINGS)
             .expect("failure getting one-call current weather");
         println!("current weather in Steamboat Springs, CO: {:?}", weather);
     }
 
     #[test]
     fn get_one_call_historical() {
-        let lat = 40.457177;
-        let lon = -106.804447;
+        let coordinates = Coordinates {
+            lat: 40.457177,
+            lon: -106.804447,
+        };
         let dt = (time::now_utc() - time::Duration::days(1)).to_timespec().sec as u64;
-        let weather = crate::get_one_call_historical(lat, lon, dt, &api_key(), SETTINGS)
+        let weather = crate::get_one_call_historical(&coordinates, dt, &api_key(), SETTINGS)
             .expect("failure getting one-call current weather");
         println!("current weather in Steamboat Springs, CO: {:?}", weather);
     }
