@@ -348,12 +348,12 @@ mod tests {
     #[test]
     fn get_one_call_current() {
         let coordinates = Coordinates {
-            lat: 40.457177,
-            lon: -106.804447,
+            lat: 37.650470,
+            lon: -119.037439,
         };
         let weather = crate::get_one_call_current(&coordinates, &api_key(), SETTINGS)
             .expect("failure getting one-call current weather");
-        println!("current weather in Steamboat Springs, CO: {:?}", weather);
+        println!("current weather in Mammoth Mountain, CA: {:?}", weather);
     }
 
     #[test]

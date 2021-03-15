@@ -218,6 +218,15 @@ pub struct WeatherReportOneCallHourly {
     pub snow: Option<Snow>,
 }
 
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
+pub struct WeatherAlert {
+    pub sender_name: String,
+    pub event: String,
+    pub description: String,
+    pub start: u64,
+    pub end: u64,
+}
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
 pub struct WeatherReportOneCall {
     pub lat: f32,
@@ -226,6 +235,7 @@ pub struct WeatherReportOneCall {
     pub timezone_offset: i64,
     pub current: WeatherReportOneCallCurrent,
     pub daily: Vec<WeatherReportOneCallDaily>,
+    pub alerts: Vec<WeatherAlert>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
