@@ -7,7 +7,6 @@ repository = "https://github.com/BroderickCarlin/openweather"
 readme = "README.md"
 keywords = ["openweather", "openweathermaps", "weather", "api"]
 categories = ["api-bindings", "science"]
-license = "MIT"
 license-file = "LICENSE-MIT"
 edition = "2018"
 

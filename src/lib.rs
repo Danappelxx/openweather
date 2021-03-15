@@ -49,13 +49,9 @@ where
     let status = http_req::request::get(url, &mut res)?;
     debug!("Url: {:?}", url);
     debug!("Status: {:?}", status);
-    debug!("Body_utf8: {:?}", res);
     let res = String::from_utf8_lossy(&res);
-    debug!("Body_String: {:?}", res);
-    // fn err_report(res: &str) -> Result<()> {
-    //     let res: ErrorReport = serde_json::from_str(&res).map(?;
-    //     Ok(())
-    // }
+    debug!("Body_String: {}", res);
+
     match serde_json::from_str(&res) {
         Ok(val) => Ok(val),
         Err(e_weather) => {
@@ -64,31 +60,6 @@ where
             Err(Error::Api(err_report))
         }
     }
-    // let res = serde_json::from_str(&res).map_err(|_| {
-    //     let res: ErrorReport = serde_json::from_str(&res)?;
-    //     Err(Error::Report(res))
-    // })?;
-    // res
-    // serde.json
-    // let data: T = match serde_json::from_str(&res).map_err(|e| ? {
-    //     Ok(val) => val,
-    //     Err(_) => {
-    //         let err_report: ErrorReport = match serde_json::from_str(&res) {
-    //             Ok(report) => report,
-    //             Err(e) => {
-    //                 return Err(ErrorReport {
-    //                     cod: 0,
-    //                     message: format!(
-    //                         "Got unexpected response: {:?} from (parsing) error: {:?}",
-    //                         res, e
-    //                     ),
-    //                 })?;
-    //             }
-    //         };
-    //         return Err(err_report);
-    //     }
-    // };
-    // Ok(data)
 }
 
 pub fn get_current_weather(
