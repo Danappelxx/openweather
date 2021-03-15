@@ -235,7 +235,7 @@ pub struct WeatherReportOneCall {
     pub timezone_offset: i64,
     pub current: WeatherReportOneCallCurrent,
     pub daily: Vec<WeatherReportOneCallDaily>,
-    pub alerts: Vec<WeatherAlert>,
+    pub alerts: Option<Vec<WeatherAlert>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Default)]
